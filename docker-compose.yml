@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: warehouse_db
+    environment:
+      POSTGRES_DB: smart_warehouse
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: warehouse_backend
+    environment:
+      PORT: 5000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: smart_warehouse
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: warehouse_mgmt_secret_key_2024
+      JWT_EXPIRES_IN: 7d
+      NODE_ENV: production
+      FRONTEND_URL: http://localhost:3000
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: warehouse_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
