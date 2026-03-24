@@ -13,6 +13,16 @@ Deploy your frontend with **Vercel** and your backend API/Database with **Render
 3. Name your database (e.g., `warehouse-db`), select the free tier, and click **Create Database**.
 4. Once provisioned, note the **Internal Database URL** and **External Database URL**.
 
+**Your Render Database Details:**
+- **Hostname**: `dpg-d711fr8gjchc7396b9r0-a`
+- **Port**: `5432`
+- **Database**: `warehouse_db_4vbm`
+- **Username**: `warehouse_db_4vbm_user`
+- **Password**: `Mbzo4ttUJpDblHdLJ2GxMsE1fmGb8lga`
+- **Internal Database URL**: `postgresql://warehouse_db_4vbm_user:Mbzo4ttUJpDblHdLJ2GxMsE1fmGb8lga@dpg-d711fr8gjchc7396b9r0-a/warehouse_db_4vbm`
+- **External Database URL**: `postgresql://warehouse_db_4vbm_user:Mbzo4ttUJpDblHdLJ2GxMsE1fmGb8lga@dpg-d711fr8gjchc7396b9r0-a.oregon-postgres.render.com/warehouse_db_4vbm`
+- **PSQL Command**: `PGPASSWORD=Mbzo4ttUJpDblHdLJ2GxMsE1fmGb8lga psql -h dpg-d711fr8gjchc7396b9r0-a.oregon-postgres.render.com -U warehouse_db_4vbm_user warehouse_db_4vbm`
+
 ### 2. Deploy the Backend API (Render)
 1. On Render, click **New +** and select **Web Service**.
 2. Connect your GitHub repository (`smart-warehouse-system`).
@@ -24,11 +34,17 @@ Deploy your frontend with **Vercel** and your backend API/Database with **Render
 4. Expand **Advanced** -> **Environment Variables** and add:
    - `PORT`: `5000`
    - `DB_DIALECT`: `postgres`
-   - `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` (extract these from your Render Database settings)
+   - `DB_HOST`: `dpg-d711fr8gjchc7396b9r0-a` (Internal Render Hostname)
+   - `DB_PORT`: `5432`
+   - `DB_NAME`: `warehouse_db_4vbm`
+   - `DB_USER`: `warehouse_db_4vbm_user`
+   - `DB_PASSWORD`: `Mbzo4ttUJpDblHdLJ2GxMsE1fmGb8lga`
    - `JWT_SECRET`: `your_secure_random_string`
    - `NODE_ENV`: `production`
-   - `FRONTEND_URL`: (You will set this to your Vercel URL in the next step)
-5. Click **Create Web Service**. Wait for the build to finish and copy your live backend URL (e.g., `https://warehouse-api.onrender.com`).
+   - `FRONTEND_URL`: `https://smart-warehouse-system.vercel.app`
+5. Click **Create Web Service**. Wait for the build to finish.
+
+**Your Live Backend API URL:** `https://smart-warehouse-system-b482.onrender.com`
 
 ### 3. Deploy the Frontend (Vercel)
 1. Log in to [Vercel.com](https://vercel.com) using your GitHub account.
@@ -36,8 +52,10 @@ Deploy your frontend with **Vercel** and your backend API/Database with **Render
 3. **Important**: Edit the **Root Directory** and select `frontend`.
 4. Vercel will auto-detect **Vite** as the framework framework.
 5. Open **Environment Variables** and add:
-   - `VITE_API_URL`: `https://warehouse-api.onrender.com/api` (the Render URL from step 2).
+   - `VITE_API_URL`: `https://smart-warehouse-system-b482.onrender.com/api`
 6. Click **Deploy**. Vercel will build your React application and provide you with a live, shareable URL!
+
+**Your Live Frontend URL:** `https://smart-warehouse-system.vercel.app`
 
 ---
 
